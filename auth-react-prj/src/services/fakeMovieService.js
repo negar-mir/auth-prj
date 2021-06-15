@@ -1,10 +1,3 @@
-import http from "./http";
-
-const apiUrl = "http://localhost:4000/api/movies";
-
-function movieUrl(id) {
-  return `${apiUrl}/${id}`;
-}
 let movies = [
   {
     id: 1,

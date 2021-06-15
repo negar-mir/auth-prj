@@ -30,7 +30,6 @@ namespace CoreAuthPrj.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        //[AutoValidateAntiforgeryToken]
         public IActionResult Delete(int id)
         {
             var movie = _movieService.GetMovieById(id);

@@ -5,7 +5,6 @@ import Login from "./components/login";
 import Logout from "./components/logout";
 import Movies from "./components/movies";
 import auth from "./services/authService";
-import "./App.css";
 
 const App = () => {
   const [user, setUser] = useState("");
