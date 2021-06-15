@@ -40,8 +40,6 @@ namespace AuthWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors("EnableCORS");

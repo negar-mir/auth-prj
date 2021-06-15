@@ -13,7 +13,7 @@ namespace CoreAuthPrj.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("EnableCORS",
-                    builder => builder.WithOrigins("http://localhost:80", "http://localhost:3000")
+                    builder => builder.WithOrigins("http://localhost", "http://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());

@@ -2,7 +2,7 @@ import axios from "axios";
 import auth from "./authService";
 import { toast } from "react-toastify";
 
-const baseUrl = "https://localhost:5001/api/";
+const baseUrl = "http://localhost:5000/api/";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
