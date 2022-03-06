@@ -7,7 +7,7 @@ import TableHeader from "./tableHeader";
 
 const Movies = ({ user }) => {
   const [movies, setMovies] = useState([]);
-  console.log("movies rendering");
+  console.log(`movies rendering ${movies.length}`);
   useEffect(() => {
     // to avoid memory leak we have 3 solutions:
     // 1. using isMounted variable
@@ -88,16 +88,18 @@ const Movies = ({ user }) => {
           to see the delete button!
         </p>
       )}
-      <table className="table table-hover">
-        <thead className="thead-dark">
-          <tr>
-            <TableHeader headerFields={headerFields} user={user} />
-          </tr>
-        </thead>
-        <tbody>
-          <TableBody movies={movies} user={user} onDelete={handleDelete} />
-        </tbody>
-      </table>
+      {movies.length > 0 && (
+        <table className="table table-hover">
+          <thead className="thead-dark">
+            <tr>
+              <TableHeader headerFields={headerFields} user={user} />
+            </tr>
+          </thead>
+          <tbody>
+            <TableBody movies={movies} user={user} onDelete={handleDelete} />
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
