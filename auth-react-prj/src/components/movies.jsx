@@ -36,14 +36,15 @@ const Movies = ({ user }) => {
     // fetchMovies();
   }, []);
 
-  const fetchMovies = async () => {
-    try {
-      const { data } = await getMovies();
-      setMovies(data);
-    } catch (ex) {
-      toast.error(ex);
-    }
-  };
+  //used for option2 and 3 of memory-leak solutions
+  // const fetchMovies = async () => {
+  //   try {
+  //     const { data } = await getMovies();
+  //     setMovies(data);
+  //   } catch (ex) {
+  //     toast.error(ex);
+  //   }
+  // };
 
   const headerFields = ["title", "director", "rate", "operation"];
 

@@ -11,4 +11,9 @@ const TableHeader = ({ headerFields, user }) => {
   );
 };
 
-export default memo(TableHeader);
+function areEqual(prevProps, nextProps) {
+  if (JSON.stringify(prevProps) === JSON.stringify(nextProps)) return true;
+
+  return false;
+}
+export default memo(TableHeader, areEqual);
