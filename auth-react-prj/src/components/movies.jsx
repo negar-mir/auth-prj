@@ -1,13 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getMovies, deleteMovie } from "../services/movieService";
+import TableBody from "./tableBody";
+import TableHeader from "./tableHeader";
 
 const Movies = ({ user }) => {
   const [movies, setMovies] = useState([]);
-
+  console.log("movies rendering");
   useEffect(() => {
-    fetchMovies();
+    // to avoid memory leak we have 3 solutions:
+    // 1. using isMounted variable
+    let isMounted = true;
+    (async () => {
+      try {
+        const { data } = await getMovies();
+        if (isMounted) setMovies(data);
+      } catch (ex) {
+        toast.error(ex);
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+
+    //// 2. to use AbortController
+    // let abortController = new AbortController();
+    // fetchMovies();
+    // return () => {
+    //   abortController.abort();
+    // };
+
+    //// 3. using use-state-if-mounted npm
+    // const [movies, setMovies] = useStateIfMounted([]);
+    // fetchMovies();
   }, []);
 
   const fetchMovies = async () => {
@@ -19,54 +45,24 @@ const Movies = ({ user }) => {
     }
   };
 
-  const renderTableHeader = () => {
-    let headerElement = ["#", "title", "director", "rate", "operation"];
+  const headerFields = ["title", "director", "rate", "operation"];
 
-    return headerElement.map((key, index) => {
-      return (key === "operation" && user) || key !== "operation" ? (
-        <th scope="col" key={index}>
-          {key.toUpperCase()}
-        </th>
-      ) : null;
-    });
-  };
-
-  const renderBody = () => {
-    return (
-      movies &&
-      movies.map(({ id, title, director, rate }, index) => {
-        return (
-          <tr key={id}>
-            <td>{index + 1}</td>
-            <td>{title}</td>
-            <td>{director}</td>
-            <td>{rate}</td>
-            {user && (
-              <td>
-                <button className="button" onClick={() => removeMovie(id)}>
-                  Delete
-                </button>
-              </td>
-            )}
-          </tr>
-        );
-      })
-    );
-  };
-
-  const removeMovie = async (id) => {
-    const originalMovies = movies;
-    const items = originalMovies.filter((movie) => movie.id !== id);
-    setMovies(items);
-    try {
-      await deleteMovie(id);
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        toast.error("This movies has already been deleted");
+  const handleDelete = useCallback(
+    async (id) => {
+      const originalMovies = movies.slice();
+      const items = originalMovies.filter((movie) => movie.id !== id);
+      setMovies(items);
+      try {
+        await deleteMovie(id);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          toast.error("This movies has already been deleted");
+        }
+        setMovies(originalMovies);
       }
-      setMovies(originalMovies);
-    }
-  };
+    },
+    [movies]
+  );
 
   return (
     <div className="col-12">
@@ -93,12 +89,16 @@ const Movies = ({ user }) => {
       )}
       <table className="table table-hover">
         <thead className="thead-dark">
-          <tr>{renderTableHeader()}</tr>
+          <tr>
+            <TableHeader headerFields={headerFields} user={user} />
+          </tr>
         </thead>
-        <tbody>{renderBody()}</tbody>
+        <tbody>
+          <TableBody movies={movies} user={user} onDelete={handleDelete} />
+        </tbody>
       </table>
     </div>
   );
 };
 
-export default Movies;
+export default memo(Movies);

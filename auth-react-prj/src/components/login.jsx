@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, memo } from "react";
 import { Redirect } from "react-router-dom";
 import auth from "../services/authService";
 
@@ -80,4 +80,4 @@ const Login = ({ user }) => {
   );
 };
 
-export default Login;
+export default memo(Login);

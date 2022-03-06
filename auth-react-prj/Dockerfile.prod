@@ -1,9 +1,10 @@
 # Step 1: Build
 FROM node:14.17.0-alpine3.13 AS build-stage
 WORKDIR /app
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
+ENV REACT_APP_API_URL=http://104.42.158.88:5000/api/
 RUN npm run build
 
 # Step 2: production

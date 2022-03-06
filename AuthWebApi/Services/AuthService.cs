@@ -15,7 +15,7 @@ namespace CoreAuthPrj.Services
 {
     public class AuthService : IAuthService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
+        // users hardcoded for simplicity
         private List<User> _users = new List<User>
         {
             new User { Id = 1, Firstname = "Negar", Lastname = "Mir", Username = "negar", Password = "negar@123" }

@@ -1,15 +1,17 @@
 version: "3.8"
 services:
   web:
-    restart: always
+    restart: unless-stopped
     build:
       context: ./auth-react-prj
       dockerfile: Dockerfile.prod
+    image: auth-web:1
     ports:
       - 80:3000
   api:
-    restart: always
+    restart: unless-stopped
     build: ./AuthWebApi
+    image: auth-api:1
     environment:
       - "ASPNETCORE_URLS=http://+:80"
       - "ASPNETCORE_ENVIRONMENT=Development"
